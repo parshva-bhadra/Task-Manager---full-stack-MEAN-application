@@ -6,10 +6,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class WebRequestService {
 
-  readonly ROOT_URL;
+  readonly ROOT_URL: string;
 
   constructor(private http: HttpClient) {
-    this.ROOT_URL = 'http://localhost:3000';
+    // Use 'http://api:3000' when running in Docker, and 'http://localhost:3000' for local development
+    this.ROOT_URL = window.location.hostname === 'localhost'
+      ? 'http://localhost:3000'
+      : 'http://api:3000';
   }
 
   get(uri: string) {
@@ -33,8 +36,8 @@ export class WebRequestService {
       email,
       password
     }, {
-        observe: 'response'
-      });
+      observe: 'response'
+    });
   }
 
   signup(email: string, password: string) {
@@ -42,9 +45,7 @@ export class WebRequestService {
       email,
       password
     }, {
-        observe: 'response'
-      });
+      observe: 'response'
+    });
   }
-
-
 }
