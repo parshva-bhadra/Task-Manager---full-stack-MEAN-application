@@ -12,9 +12,22 @@ const jwt = require('jsonwebtoken');
 
 
 /* MIDDLEWARE  */
+app.use(bodyParser.json());
 
 // Load middleware
-app.use(bodyParser.json());
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*"); // Allow all origins
+    res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE"); // Allowed methods
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-refresh-token, _id"); // Allowed headers
+
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+
+    next();
+});
+
 
 
 // CORS HEADERS MIDDLEWARE
